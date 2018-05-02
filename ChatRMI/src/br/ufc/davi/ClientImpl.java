@@ -1,16 +1,22 @@
 package br.ufc.davi;
 
-import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.Random;
 import java.util.Scanner;
 
-public class ClientImpl implements Client{
+public class ClientImpl extends UnicastRemoteObject implements Client{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String name;
 	Server server;
-	public ClientImpl(String name, Server server){
+	public ClientImpl(String name, Server server) throws RemoteException{
+		super();
 		this.name = name;
 		this.server = server;
 	}
@@ -22,8 +28,6 @@ public class ClientImpl implements Client{
 	@Override
 	public void update() throws RemoteException {
 		String message  = server.getLastMessage();
-		System.out.println(message);
-		System.out.println(message);
 		System.out.println(message);
 		
 	}
@@ -43,7 +47,8 @@ public class ClientImpl implements Client{
 			Server s = (Server) reg.lookup("MessageService");
 			
 			if(s != null){
-				ClientImpl cliente = new ClientImpl("mobbr", s);
+				ClientImpl cliente = new ClientImpl(new Random().nextInt() + "", s);
+				
 				s.acceptClient(cliente);
 				new Thread(new Runnable(){ //thread de input.
 					@Override

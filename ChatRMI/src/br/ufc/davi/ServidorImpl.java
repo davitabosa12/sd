@@ -1,32 +1,31 @@
 package br.ufc.davi;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.RemoteObject;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Vector;
 
 public class ServidorImpl implements Server {
 
 	private Vector<String> messages = null;
-	private Vector<Client> clients = null;
+	private Vector<Remote> clients = null;
 	public ServidorImpl(){
 		messages = new Vector<String>();
-		clients = new Vector<Client>();
+		clients = new Vector<Remote>();
 	}
-	@Override
-	public void acceptClient(Client c) throws RemoteException {
-		clients.add(c);
 
-	}
 
 	public void notifyClients() {
-		for(Client c : clients){
+		for(Remote r : clients){
 			try {
+				Client c = (Client) r;
 				c.update();
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				clients.remove(r);
 			}
 		}
 
@@ -63,6 +62,12 @@ public class ServidorImpl implements Server {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	}
+	@Override
+	public void acceptClient(Remote remote) throws RemoteException {
+		System.out.println("Remote accepted");
+		clients.add(remote);
 		
 	}
 	
