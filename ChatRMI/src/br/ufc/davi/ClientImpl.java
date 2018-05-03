@@ -22,7 +22,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client{
 	}
 	
 	public void say(String s) throws RemoteException {
-		server.pushMessage(name, s);
+		server.pushMessage(this, s);
 		
 	}
 	@Override
@@ -31,23 +31,45 @@ public class ClientImpl extends UnicastRemoteObject implements Client{
 		System.out.println(message);
 		
 	}
+	@Override
+	public String getNickname() throws RemoteException {
+		
+		return name;
+	}
 
 	@Override
 	public boolean checkConnection() throws RemoteException {
 		return true;
 		
 	}
-	
 	public static void main(String[] args){
 		Scanner teclado = new Scanner(System.in);
 		String serverHost = "localhost";
+		
+		System.out.print("Nickname: ");
+		String nick = teclado.next();
 		
 		try{
 			Registry reg = LocateRegistry.getRegistry(serverHost);
 			Server s = (Server) reg.lookup("MessageService");
 			
 			if(s != null){
-				ClientImpl cliente = new ClientImpl(new Random().nextInt() + "", s);
+				ClientImpl cliente = new ClientImpl(nick, s);
+				Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+					@Override
+					public void run() {
+						String result;
+						try {
+							result = s.removeClient(cliente) + "";
+							System.out.println(result);
+
+						} catch (RemoteException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+					}
+				}));
 				
 				s.acceptClient(cliente);
 				new Thread(new Runnable(){ //thread de input.
@@ -56,6 +78,9 @@ public class ClientImpl extends UnicastRemoteObject implements Client{
 						while(true){
 							String input = teclado.nextLine();
 							if(!input.isEmpty()){
+								if(input.equals("/quit") || input.equals("/q")) {
+								System.exit(0);
+								}
 								try {
 									cliente.say(input);
 								} catch (RemoteException e) {
@@ -65,6 +90,8 @@ public class ClientImpl extends UnicastRemoteObject implements Client{
 							}
 						}
 					}
+
+					
 				}).start();
 			}
 		}
@@ -73,4 +100,5 @@ public class ClientImpl extends UnicastRemoteObject implements Client{
 		}
 	}
 
+	
 }
