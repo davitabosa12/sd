@@ -2,24 +2,28 @@ package br.ufc.davi;
 
 public class Deposito {
 	private int items = 0;
-	private final int capacidade = 100;
+	private final int capacidade = 10;
     
 	public int getNumItens(){
 		return items;
 		
 	} 
 	
-	public boolean retirar() {
+	public synchronized boolean retirar() {
+		
 		if(items > 0) {
 			items=getNumItens() - 1;
 			return true;
 		}
 		else
 			return false;
+		
 	}	
 
-	public boolean colocar() {
-			items=getNumItens() +1;
+	public synchronized boolean colocar() {
+		if(items + 1 > capacidade)
+			return false;
+		items=getNumItens() +1;
 			return true;
 			}
 
