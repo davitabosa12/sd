@@ -10,8 +10,19 @@ public class Consumidor extends Thread{
 	}
 	@Override
 	public void run() {
-		for(int i = 0; i < 20; i ++ ) {
-			dep.retirar();
+		int i = 0;
+		while(i < 20) {
+			if(!dep.retirar()) {
+
+				try {
+					sleep(200);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				i++;
+			}
 			try {
 				sleep(time);
 			} catch (InterruptedException e) {
@@ -21,5 +32,5 @@ public class Consumidor extends Thread{
 		}
 	} 
 
-	
+
 }
