@@ -10,8 +10,12 @@ public class Deposito {
 	} 
 	
 	public boolean retirar() {
+		if(items > 0) {
 			items=getNumItens() - 1;
 			return true;
+		}
+		else
+			return false;
 	}	
 
 	public boolean colocar() {

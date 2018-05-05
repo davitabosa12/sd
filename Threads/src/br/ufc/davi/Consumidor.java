@@ -19,7 +19,7 @@ public class Consumidor extends Thread{
 				e.printStackTrace();
 			}
 		}
-	}
+	} 
 
 	
 }
