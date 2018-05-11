@@ -1,26 +1,36 @@
 package yamlTeste;
 
-import java.io.FileWriter;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.net.Socket;
+import java.net.URL;
+import java.util.ArrayList;
 
-import com.esotericsoftware.yamlbeans.YamlReader;
-import com.esotericsoftware.yamlbeans.YamlWriter;
-
-import yamlTeste.Contato;
+import com.google.gson.Gson;
 
 public class Test {
 
 	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
-		Contato davi = new Contato();
-		davi.nome = "Davi Tabosa";
-		davi.idade = 22;
+		Filme filme = new Filme();
+		filme.ano = 1998;
+		filme.Avaliacao_IMDB = 10;
+		filme.linkparaTraillerNoYoutube = new URL("http://youtube.com");
+		filme.titulo = "Filme";
+		filme.tres_filmes_mais_relacionados = new ArrayList<Filme>();
 		
-		YamlWriter writer = new YamlWriter(new FileWriter("output.yml"));
+		String json = new Gson().toJson(filme);
+		System.out.println(json);
 		
-		writer.write(davi);
-		writer.close();
-		System.out.println("Fim.");
+		Socket envia = new Socket("localhost", 8001);
+		BufferedOutputStream out = new BufferedOutputStream( envia.getOutputStream());
+		BufferedInputStream in = new BufferedInputStream( envia.getInputStream());
+		System.out.println(new String(json.getBytes()));
+		byte[] b = json.getBytes();
+		out.write(b);
+		out.flush();
+		System.out.println("Enviado");
+		
 	}
 
 }
