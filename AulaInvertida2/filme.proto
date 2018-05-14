@@ -1,0 +1,10 @@
+message Filme{
+    int32 FilmeID = 1;
+    string titulo = 2;
+    int32 ano = 3;
+    int32 Avaliacao_IMDB = 4;
+    
+    string linkparaTraillerNoYoutube = 5;
+    repeated Filme tres_filmes_mais_relacionados = 6;
+
+}

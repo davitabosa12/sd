@@ -1,0 +1,33 @@
+{
+    "filmeID": 14,
+    "titulo": "Nome do filme1",
+    "ano": 1958,
+    "Avaliacao_IMDB": 7,
+    "tres_filmes_mais_relacionados": [
+        {
+            "filmeID": 141,
+            "titulo": "Nome do filme",
+            "ano": 1958,
+            "Avaliacao_IMDB": 4,
+            "tres_filmes_mais_relacionados": [],
+            "linkparaTraillerNoYoutube": "http://youtube.com"
+        },
+        {
+            "filmeID": 141,
+            "titulo": "Nome do filme",
+            "ano": 1958,
+            "Avaliacao_IMDB": 4,
+            "tres_filmes_mais_relacionados": [],
+            "linkparaTraillerNoYoutube": "http://youtube.com"
+        },
+        {
+            "filmeID": 141,
+            "titulo": "Nome do filme",
+            "ano": 1958,
+            "Avaliacao_IMDB": 4,
+            "tres_filmes_mais_relacionados": [],
+            "linkparaTraillerNoYoutube": "http://youtube.com"
+        }
+    ],
+    "linkparaTraillerNoYoutube": "http://youtube.com"
+}
